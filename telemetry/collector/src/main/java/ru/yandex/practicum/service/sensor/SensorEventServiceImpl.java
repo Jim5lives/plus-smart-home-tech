@@ -9,6 +9,8 @@ import ru.yandex.practicum.kafka.telemetry.event.*;
 import ru.yandex.practicum.kafka.KafkaClient;
 import ru.yandex.practicum.model.sensor.*;
 
+import java.util.Objects;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -22,6 +24,7 @@ public class SensorEventServiceImpl implements SensorEventService {
     public void collect(SensorEvent event) {
         SensorEventAvro sensorEventAvro = mapToAvro(event);
         kafkaClient.getProducer().send(new ProducerRecord<>(topic, sensorEventAvro));
+        log.info("To topic {} sent message with sensor event {}", topic, event);
     }
 
     private SensorEventAvro mapToAvro(SensorEvent event) {
@@ -51,7 +54,7 @@ public class SensorEventServiceImpl implements SensorEventService {
             case null, default -> {
                 TemperatureSensorEvent temperatureSensorEvent = (TemperatureSensorEvent) event;
                 payload = TemperatureSensorAvro.newBuilder()
-                        .setTemperatureC(temperatureSensorEvent.getTemperatureC())
+                        .setTemperatureC(Objects.requireNonNull(temperatureSensorEvent).getTemperatureC())
                         .setTemperatureF(temperatureSensorEvent.getTemperatureF())
                         .build();
             }

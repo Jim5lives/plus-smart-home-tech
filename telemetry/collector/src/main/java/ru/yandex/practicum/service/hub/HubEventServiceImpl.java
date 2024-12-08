@@ -25,6 +25,7 @@ public class HubEventServiceImpl implements HubEventService {
     public void collect(HubEvent event) {
         HubEventAvro hubEventAvro = mapToAvro(event);
         kafkaClient.getProducer().send(new ProducerRecord<>(topic,hubEventAvro));
+        log.info("To topic {} sent message with hub event {}", topic, event);
     }
 
     private HubEventAvro mapToAvro(HubEvent event) {
