@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.yandex.practicum.model.hub.HubEvent;
 import ru.yandex.practicum.model.sensor.SensorEvent;
-import ru.yandex.practicum.service.HubEventService;
-import ru.yandex.practicum.service.SensorEventService;
+import ru.yandex.practicum.service.hub.HubEventService;
+import ru.yandex.practicum.service.sensor.SensorEventService;
 
 @Slf4j
 @RestController
