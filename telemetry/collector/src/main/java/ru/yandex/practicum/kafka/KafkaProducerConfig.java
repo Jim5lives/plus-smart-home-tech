@@ -8,7 +8,6 @@ import org.apache.kafka.common.serialization.VoidSerializer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Scope;
 import ru.yandex.practicum.kafka.serializer.GeneralKafkaSerializer;
 
 import java.util.Properties;
@@ -20,7 +19,6 @@ public class KafkaProducerConfig {
     private String bootstrapAddress;
 
     @Bean
-    @Scope("prototype")
     KafkaClient getClient() {
         return new KafkaClient() {
 
