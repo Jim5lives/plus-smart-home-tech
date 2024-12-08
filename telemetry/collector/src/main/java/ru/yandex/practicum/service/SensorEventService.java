@@ -1,6 +1,6 @@
 package ru.yandex.practicum.service;
 
-import ru.yandex.practicum.model.SensorEvent;
+import ru.yandex.practicum.model.sensor.SensorEvent;
 
 public interface SensorEventService {
 

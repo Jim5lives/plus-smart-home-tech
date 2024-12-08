@@ -1,4 +1,4 @@
-package ru.yandex.practicum.kafkaClient;
+package ru.yandex.practicum.kafka;
 
 import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.clients.producer.Producer;

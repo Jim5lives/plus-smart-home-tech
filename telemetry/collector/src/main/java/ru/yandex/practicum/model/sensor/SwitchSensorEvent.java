@@ -1,6 +1,5 @@
-package ru.yandex.practicum.model;
+package ru.yandex.practicum.model.sensor;
 
-import jakarta.validation.constraints.Positive;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,15 +10,11 @@ import lombok.experimental.FieldDefaults;
 @Setter
 @ToString(callSuper = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ClimateSensorEvent extends SensorEvent {
-    int temperatureC;
-    @Positive
-    int humidity;
-    @Positive
-    int co2Level;
+public class SwitchSensorEvent extends SensorEvent {
+    boolean state;
 
     @Override
     public SensorEventType getType() {
-        return SensorEventType.CLIMATE_SENSOR_EVENT;
+        return SensorEventType.SWITCH_SENSOR_EVENT;
     }
 }

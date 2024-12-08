@@ -1,5 +1,6 @@
-package ru.yandex.practicum.model;
+package ru.yandex.practicum.model.hub;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,11 +11,12 @@ import lombok.experimental.FieldDefaults;
 @Setter
 @ToString(callSuper = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class SwitchSensorEvent extends SensorEvent {
-    boolean state;
+public class DeviceRemovedEvent extends HubEvent {
+    @NotBlank
+    String id;
 
     @Override
-    public SensorEventType getType() {
-        return SensorEventType.SWITCH_SENSOR_EVENT;
+    public HubEventType getType() {
+        return HubEventType.DEVICE_REMOVED;
     }
 }

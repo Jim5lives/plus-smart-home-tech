@@ -6,8 +6,8 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.kafka.telemetry.event.*;
-import ru.yandex.practicum.kafkaClient.KafkaClient;
-import ru.yandex.practicum.model.*;
+import ru.yandex.practicum.kafka.KafkaClient;
+import ru.yandex.practicum.model.sensor.*;
 
 @Slf4j
 @Service

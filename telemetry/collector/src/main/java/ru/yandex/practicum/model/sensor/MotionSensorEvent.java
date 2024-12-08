@@ -1,6 +1,5 @@
-package ru.yandex.practicum.model;
+package ru.yandex.practicum.model.sensor;
 
-import jakarta.validation.constraints.Positive;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,13 +10,13 @@ import lombok.experimental.FieldDefaults;
 @Setter
 @ToString(callSuper = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class LightSensorEvent extends SensorEvent {
-    @Positive
+public class MotionSensorEvent extends SensorEvent {
     int linkQuality;
-    int luminosity;
+    boolean motion;
+    int voltage;
 
     @Override
     public SensorEventType getType() {
-        return SensorEventType.LIGHT_SENSOR_EVENT;
+        return SensorEventType.MOTION_SENSOR_EVENT;
     }
 }
