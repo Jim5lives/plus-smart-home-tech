@@ -19,7 +19,7 @@ import ru.yandex.practicum.kafka.telemetry.event.ScenarioRemovedEventAvro;
 public class ScenarioRemovedEventHandler implements HubEventHandler {
 
     @Value(value = "${hubEventTopic}")
-    private final String topic;
+    private String topic;
     private final KafkaClient kafkaClient;
 
     @Override

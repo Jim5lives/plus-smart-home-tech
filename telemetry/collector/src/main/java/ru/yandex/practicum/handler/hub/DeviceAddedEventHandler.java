@@ -18,7 +18,7 @@ import ru.yandex.practicum.kafka.KafkaClient;
 public class DeviceAddedEventHandler implements HubEventHandler {
 
     @Value(value = "${hubEventTopic}")
-    private final String topic;
+    private String topic;
     private final KafkaClient kafkaClient;
 
 

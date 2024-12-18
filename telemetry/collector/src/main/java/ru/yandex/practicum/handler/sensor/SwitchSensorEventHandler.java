@@ -19,7 +19,7 @@ import ru.yandex.practicum.kafka.telemetry.event.SwitchSensorAvro;
 public class SwitchSensorEventHandler implements SensorEventHandler {
 
     @Value(value = "${sensorEventTopic}")
-    private final String topic;
+    private String topic;
     private final KafkaClient kafkaClient;
 
     @Override
