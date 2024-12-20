@@ -29,7 +29,6 @@ public class SnapshotHandler {
     private final ConditionRepository conditionRepository;
     private final ActionRepository actionRepository;
 
-
     public void handle(SensorsSnapshotAvro snapshot) {
         String hubId = snapshot.getHubId();
         log.info("Handle snapshot from hub ID: \"{}\"", hubId);
