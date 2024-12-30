@@ -1,0 +1,2 @@
+sensorEventTopic: telemetry.sensors.v1
+hubEventTopic: telemetry.hubs.v1

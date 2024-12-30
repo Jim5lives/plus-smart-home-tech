@@ -34,13 +34,12 @@ public class AggregationStarter {
     private static final List<String> TOPICS = List.of("telemetry.sensors.v1");
     private static final Map<TopicPartition, OffsetAndMetadata> currentOffsets = new HashMap<>();
     private static final Duration CONSUME_ATTEMPT_TIMEOUT = Duration.ofMillis(1000);
-    private static  final String SNAPSHOT_TOPIC = "telemetry.snapshots.v1";
+    private static final String SNAPSHOT_TOPIC = "telemetry.snapshots.v1";
 
     private final RecordHandler recordHandler;
 
     private final KafkaConsumer<String, SensorEventAvro> consumer = new KafkaConsumer<>(getConsumerProperties());
     private final KafkaProducer<String, SpecificRecordBase> producer = new KafkaProducer<>(getProducerProperties());
-
 
     public void start() {
         try {
