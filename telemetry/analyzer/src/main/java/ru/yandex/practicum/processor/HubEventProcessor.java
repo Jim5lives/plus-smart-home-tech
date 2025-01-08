@@ -30,7 +30,7 @@ public class HubEventProcessor implements Runnable {
 
             while (true) {
                 ConsumerRecords<String, HubEventAvro> records = consumer.poll(config.getHubConsumeAttemptTimeout());
-                for (ConsumerRecord<String, HubEventAvro> record : records) {
+                for (ConsumerRecord<String, HubEventAvro>  record : records) {
                     HubEventAvro hubEventAvro = record.value();
                     log.info("Received hubEvent from hub ID = {}", hubEventAvro.getHubId());
                     handler.handle(hubEventAvro);
@@ -38,7 +38,7 @@ public class HubEventProcessor implements Runnable {
                 }
                 consumer.commitAsync();
             }
-        } catch (WakeupException ignored) {
+        } catch (WakeupException ignored)    {
 
         } catch (Exception e) {
             log.error("Error:", e);

@@ -27,7 +27,6 @@ public class Analyzer {
         hubEventsThread.setName("HubEventHandlerThread");
         hubEventsThread.start();
 
-
         snapshotProcessor.start();
     }
 }
