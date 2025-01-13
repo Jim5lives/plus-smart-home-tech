@@ -10,5 +10,9 @@
     </parent>
 
     <artifactId>interaction-api</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>dto</module>
+    </modules>
 
 </project>
