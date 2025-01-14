@@ -11,4 +11,6 @@ public interface ShoppingStoreService {
     ProductDto findProductById(UUID id);
 
     ProductDto updateProduct(ProductDto product);
+
+    void removeProductFromStore(UUID productId);
 }

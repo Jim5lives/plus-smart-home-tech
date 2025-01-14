@@ -18,7 +18,7 @@ public class ShoppingStoreController {
 
     @PutMapping
     public ProductDto addProduct(@Valid @RequestBody ProductDto product) {
-        log.info("Received request to add product to shop: {}", product);
+        log.info("Received request to add product to store: {}", product);
         return shoppingStoreService.addProduct(product);
     }
 
@@ -32,5 +32,11 @@ public class ShoppingStoreController {
     public ProductDto updateProduct(@Valid @RequestBody ProductDto product) {
         log.info("Received request to update product: {}", product);
         return shoppingStoreService.updateProduct(product);
+    }
+
+    @PostMapping("/removeProductFromStore")
+    public void removeProduct(@RequestBody UUID productId) {
+        log.info("Received request to remove from store product with ID: {}", productId);
+        shoppingStoreService.removeProductFromStore(productId);
     }
 }
