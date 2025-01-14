@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.model.ProductDto;
 import ru.yandex.practicum.service.ShoppingStoreService;
 
+import java.util.UUID;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -18,5 +20,11 @@ public class ShoppingStoreController {
     public ProductDto addProduct(@Valid @RequestBody ProductDto product) {
         log.info("Received request to add product to product range: {}", product);
         return shoppingStoreService.addProduct(product);
+    }
+
+    @GetMapping("/{id}")
+    public ProductDto getProductById(@PathVariable UUID id) {
+        log.info("Received request to get product by ID: {}", id);
+        return shoppingStoreService.findProductById(id);
     }
 }
