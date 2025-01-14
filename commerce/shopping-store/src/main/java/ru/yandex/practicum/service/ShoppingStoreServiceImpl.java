@@ -35,6 +35,15 @@ public class ShoppingStoreServiceImpl implements ShoppingStoreService {
         return productMapper.mapToProductDto(product);
     }
 
+    @Override
+    public ProductDto updateProduct(ProductDto productDto) {
+        getProduct(productDto.getProductId());
+        Product productUpdated = productMapper.mapToProduct(productDto);
+        productUpdated = repository.save(productUpdated);
+        log.info("Product is updated: {}", productUpdated);
+        return productMapper.mapToProductDto(productUpdated);
+    }
+
     private Product getProduct(UUID id) {
         return repository.findById(id).orElseThrow(() ->  {
             log.info("Product with ID: {} is not found", id);

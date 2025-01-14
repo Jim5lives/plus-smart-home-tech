@@ -9,4 +9,6 @@ public interface ShoppingStoreService {
     ProductDto addProduct(ProductDto product);
 
     ProductDto findProductById(UUID id);
+
+    ProductDto updateProduct(ProductDto product);
 }
