@@ -10,6 +10,7 @@ import ru.yandex.practicum.model.Product;
 import ru.yandex.practicum.model.ProductDto;
 import ru.yandex.practicum.model.ProductState;
 import ru.yandex.practicum.repository.ShoppingStoreRepository;
+import ru.yandex.practicum.request.SetProductQuantityStateRequest;
 
 import java.util.UUID;
 
@@ -51,6 +52,14 @@ public class ShoppingStoreServiceImpl implements ShoppingStoreService {
         product.setProductState(ProductState.DEACTIVATE);
         productRepository.save(product);
         log.info("Product with ID: {} removed from store", productId);
+    }
+
+    @Override
+    public void setProductQuantityState(SetProductQuantityStateRequest request) {
+        Product product = getProduct(request.getProductId());
+        product.setQuantityState(request.getQuantityState());
+        productRepository.save(product);
+        log.info("Product quantity is changed to {}", request.getQuantityState());
     }
 
     private Product getProduct(UUID id) {

@@ -1,6 +1,7 @@
 package ru.yandex.practicum.service;
 
 import ru.yandex.practicum.model.ProductDto;
+import ru.yandex.practicum.request.SetProductQuantityStateRequest;
 
 import java.util.UUID;
 
@@ -13,4 +14,6 @@ public interface ShoppingStoreService {
     ProductDto updateProduct(ProductDto product);
 
     void removeProductFromStore(UUID productId);
+
+    void setProductQuantityState(SetProductQuantityStateRequest request);
 }
