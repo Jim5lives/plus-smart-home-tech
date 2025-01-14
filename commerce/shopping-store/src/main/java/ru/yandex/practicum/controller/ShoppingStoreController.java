@@ -4,10 +4,13 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import ru.yandex.practicum.model.Pageable;
+import ru.yandex.practicum.model.ProductCategory;
 import ru.yandex.practicum.model.ProductDto;
 import ru.yandex.practicum.request.SetProductQuantityStateRequest;
 import ru.yandex.practicum.service.ShoppingStoreService;
 
+import java.util.Collection;
 import java.util.UUID;
 
 @Slf4j
@@ -46,5 +49,11 @@ public class ShoppingStoreController {
         log.info("Received request to change product with ID: {} quantity state to: {}",
                 request.getProductId(), request.getQuantityState());
         shoppingStoreService.setProductQuantityState(request);
+    }
+
+    @GetMapping
+    public Collection<ProductDto> searchProducts(String category, Pageable params) {
+        log.info("Received request to search products from category {} with params: {}", category, params);
+        return shoppingStoreService.searchProducts(category, params);
     }
 }
