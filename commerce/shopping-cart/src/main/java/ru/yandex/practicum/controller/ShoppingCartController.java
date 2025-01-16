@@ -22,4 +22,10 @@ public class ShoppingCartController {
         log.info("Received request by user: {} to add products to shopping cart", username);
         return shoppingCartService.addProductToShoppingCart(username, products);
     }
+
+    @GetMapping
+    public ShoppingCartDto getUsersShoppingCart(@RequestParam String username) {
+        log.info("Received request to get user's {} shopping cart", username);
+        return shoppingCartService.getUsersShoppingCart(username);
+    }
 }

@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.yandex.practicum.exception.NotAuthorizedUserException;
 import ru.yandex.practicum.mapper.ShoppingCartMapper;
 import ru.yandex.practicum.model.ShoppingCart;
 import ru.yandex.practicum.model.ShoppingCartDto;
@@ -26,6 +27,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     @Transactional
     public ShoppingCartDto addProductToShoppingCart(String username, Map<UUID, Integer> products) {
+        validateUsername(username);
         ShoppingCart shoppingCart = getShoppingCart(username);
         Map<UUID, Integer> oldProducts = shoppingCart.getProducts();
         oldProducts.putAll(products);
@@ -33,6 +35,20 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         shoppingCartRepository.save(shoppingCart);
         log.info("Products added to shopping cart: {}", shoppingCart);
         return shoppingCartMapper.mapToShoppingCartDto(shoppingCart);
+    }
+
+    @Override
+    public ShoppingCartDto getUsersShoppingCart(String username) {
+        validateUsername(username);
+        ShoppingCart shoppingCart = getShoppingCart(username);
+        log.info("Returning shopping cart of user {}", username);
+        return shoppingCartMapper.mapToShoppingCartDto(shoppingCart);
+    }
+
+    private void validateUsername(String username) {
+        if (username.isBlank()) {
+            throw new NotAuthorizedUserException("Username is blank");
+        }
     }
 
     private ShoppingCart getShoppingCart(String username) {
