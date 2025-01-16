@@ -13,6 +13,7 @@ import ru.yandex.practicum.model.ShoppingCartState;
 import ru.yandex.practicum.repository.ShoppingCartRepository;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -53,6 +54,18 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         shoppingCart.setState(ShoppingCartState.DEACTIVATE);
         shoppingCartRepository.save(shoppingCart);
         log.info("Shopping cart of user {} is deactivated", username);
+    }
+
+    @Override
+    public ShoppingCartDto removeProductsFromShoppingCart(String username, List<UUID> products) {
+        validateUsername(username);
+        ShoppingCart shoppingCart = getShoppingCart(username);
+        Map<UUID, Integer> productMap = shoppingCart.getProducts();
+        productMap.keySet().retainAll(products);
+        shoppingCart.setProducts(productMap);
+        shoppingCartRepository.save(shoppingCart);
+        log.info("Product in shopping cart of user {} have been changed", username);
+        return shoppingCartMapper.mapToShoppingCartDto(shoppingCart);
     }
 
     private void validateUsername(String username) {

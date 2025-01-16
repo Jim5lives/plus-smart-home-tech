@@ -2,6 +2,7 @@ package ru.yandex.practicum.service;
 
 import ru.yandex.practicum.model.ShoppingCartDto;
 
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -12,4 +13,6 @@ public interface ShoppingCartService {
     ShoppingCartDto getUsersShoppingCart(String username);
 
     void deactivateShoppingCart(String username);
+
+    ShoppingCartDto removeProductsFromShoppingCart(String username, List<UUID> products);
 }

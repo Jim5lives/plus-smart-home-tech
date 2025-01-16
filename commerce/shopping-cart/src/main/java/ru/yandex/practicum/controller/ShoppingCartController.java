@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.model.ShoppingCartDto;
 import ru.yandex.practicum.service.ShoppingCartService;
 
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -33,5 +34,12 @@ public class ShoppingCartController {
     public void deactivateShoppingCart(@RequestParam String username) {
         log.info("Received request to deactivate shopping cart of user: {}", username);
         shoppingCartService.deactivateShoppingCart(username);
+    }
+
+    @PostMapping("/remove")
+    public ShoppingCartDto removeProductFromShoppingCart(@RequestParam String username,
+                                                         @RequestBody List<UUID> products) {
+        log.info("Received request to remove product from shopping cart of user: {}", username);
+        return shoppingCartService.removeProductsFromShoppingCart(username, products);
     }
 }
