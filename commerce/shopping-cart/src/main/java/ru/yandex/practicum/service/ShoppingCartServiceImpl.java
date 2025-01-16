@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.yandex.practicum.exception.NotAuthorizedUserException;
 import ru.yandex.practicum.mapper.ShoppingCartMapper;
+import ru.yandex.practicum.model.ChangeProductQuantityRequest;
 import ru.yandex.practicum.model.ShoppingCart;
 import ru.yandex.practicum.model.ShoppingCartDto;
 import ru.yandex.practicum.model.ShoppingCartState;
@@ -57,6 +58,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
+    @Transactional
     public ShoppingCartDto removeProductsFromShoppingCart(String username, List<UUID> products) {
         validateUsername(username);
         ShoppingCart shoppingCart = getShoppingCart(username);
@@ -65,6 +67,19 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         shoppingCart.setProducts(productMap);
         shoppingCartRepository.save(shoppingCart);
         log.info("Product in shopping cart of user {} have been changed", username);
+        return shoppingCartMapper.mapToShoppingCartDto(shoppingCart);
+    }
+
+    @Override
+    @Transactional
+    public ShoppingCartDto changeProductQuantityInCart(String username, ChangeProductQuantityRequest request) {
+        validateUsername(username);
+        ShoppingCart shoppingCart = getShoppingCart(username);
+        Map<UUID, Integer> cartProducts = shoppingCart.getProducts();
+        cartProducts.put(request.getProductId(), request.getNewQuantity());
+        shoppingCart.setProducts(cartProducts);
+        shoppingCartRepository.save(shoppingCart);
+        log.info("Product quantity is changed to {}", request.getNewQuantity());
         return shoppingCartMapper.mapToShoppingCartDto(shoppingCart);
     }
 

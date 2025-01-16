@@ -3,6 +3,7 @@ package ru.yandex.practicum.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import ru.yandex.practicum.model.ChangeProductQuantityRequest;
 import ru.yandex.practicum.model.ShoppingCartDto;
 import ru.yandex.practicum.service.ShoppingCartService;
 
@@ -41,5 +42,12 @@ public class ShoppingCartController {
                                                          @RequestBody List<UUID> products) {
         log.info("Received request to remove product from shopping cart of user: {}", username);
         return shoppingCartService.removeProductsFromShoppingCart(username, products);
+    }
+
+    @PostMapping("/change-quantity")
+    public ShoppingCartDto changeProductQuantityInCart(@RequestParam String username,
+                                                       @RequestBody ChangeProductQuantityRequest request) {
+        log.info("Received request to change product quantity in shopping cart of user: {}", username);
+        return shoppingCartService.changeProductQuantityInCart(username, request);
     }
 }
