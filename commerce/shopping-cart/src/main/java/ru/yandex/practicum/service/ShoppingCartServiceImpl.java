@@ -45,6 +45,16 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         return shoppingCartMapper.mapToShoppingCartDto(shoppingCart);
     }
 
+    @Override
+    @Transactional
+    public void deactivateShoppingCart(String username) {
+        validateUsername(username);
+        ShoppingCart shoppingCart = getShoppingCart(username);
+        shoppingCart.setState(ShoppingCartState.DEACTIVATE);
+        shoppingCartRepository.save(shoppingCart);
+        log.info("Shopping cart of user {} is deactivated", username);
+    }
+
     private void validateUsername(String username) {
         if (username.isBlank()) {
             throw new NotAuthorizedUserException("Username is blank");

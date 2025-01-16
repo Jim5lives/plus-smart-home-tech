@@ -28,4 +28,10 @@ public class ShoppingCartController {
         log.info("Received request to get user's {} shopping cart", username);
         return shoppingCartService.getUsersShoppingCart(username);
     }
+
+    @DeleteMapping
+    public void deactivateShoppingCart(@RequestParam String username) {
+        log.info("Received request to deactivate shopping cart of user: {}", username);
+        shoppingCartService.deactivateShoppingCart(username);
+    }
 }
