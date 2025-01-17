@@ -7,11 +7,14 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.yandex.practicum.exception.NoSpecifiedProductInWarehouseException;
 import ru.yandex.practicum.exception.SpecifiedProductAlreadyInWarehouseException;
 import ru.yandex.practicum.mapper.WarehouseProductMapper;
+import ru.yandex.practicum.model.AddressDto;
 import ru.yandex.practicum.model.WarehouseProduct;
 import ru.yandex.practicum.repository.WarehouseRepository;
 import ru.yandex.practicum.request.AddProductToWarehouseRequest;
 import ru.yandex.practicum.request.NewProductInWarehouseRequest;
 
+import java.security.SecureRandom;
+import java.util.Random;
 import java.util.UUID;
 
 @Slf4j
@@ -21,6 +24,21 @@ import java.util.UUID;
 public class WarehouseServiceImpl implements WarehouseService {
     private final WarehouseRepository warehouseRepository;
     private final WarehouseProductMapper warehouseProductMapper;
+    private static final AddressDto[] ADDRESSES =
+            new AddressDto[]{
+                    new AddressDto("ADDRESS_1",
+                            "ADDRESS_1",
+                            "ADDRESS_1",
+                            "ADDRESS_1",
+                            "ADDRESS_1"),
+                    new AddressDto("ADDRESS_2",
+                            "ADDRESS_2",
+                            "ADDRESS_2",
+                            "ADDRESS_2",
+                            "ADDRESS_2")};
+
+    private static final AddressDto CURRENT_ADDRESS =
+            ADDRESSES[Random.from(new SecureRandom()).nextInt(0, 1)];
 
 
     @Override
@@ -41,6 +59,12 @@ public class WarehouseServiceImpl implements WarehouseService {
         product.setQuantity(quantity);
         warehouseRepository.save(product);
         log.info("Added {} products with ID: {}", request.getQuantity(), request.getProductId());
+    }
+
+    @Override
+    public AddressDto getWarehouseAddress() {
+        log.info("Closest warehouse address: {}", CURRENT_ADDRESS);
+        return CURRENT_ADDRESS;
     }
 
     private WarehouseProduct getWarehouseProduct(UUID id) {
