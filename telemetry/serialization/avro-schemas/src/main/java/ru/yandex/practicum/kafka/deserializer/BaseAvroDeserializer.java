@@ -8,7 +8,7 @@ import org.apache.avro.specific.SpecificDatumReader;
 import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.common.serialization.Deserializer;
 
-public class BaseAvroDeserializer <T extends SpecificRecordBase> implements Deserializer<T> {
+public class BaseAvroDeserializer<T extends SpecificRecordBase> implements Deserializer<T> {
     private final DecoderFactory decoderFactory;
     private final DatumReader<T> reader;
 

@@ -9,7 +9,7 @@ import ru.yandex.practicum.model.ShoppingCartDto;
 
 @FeignClient(name = "warehouse", path = "/api/v1/warehouse")
 public interface WarehouseOperations {
-    
+
     @PostMapping("/check")
     BookedProductsDto checkShoppingCart(@RequestBody ShoppingCartDto shoppingCartDto) throws FeignException;
 }
