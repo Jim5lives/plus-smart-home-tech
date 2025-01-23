@@ -19,6 +19,8 @@ public class OrderDto {
     @NotNull
     UUID orderId;
 
+    String username;
+
     UUID shoppingCartId;
 
     @NotNull
