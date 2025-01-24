@@ -17,6 +17,9 @@ import ru.yandex.practicum.request.AddProductToWarehouseRequest;
 import ru.yandex.practicum.request.NewProductInWarehouseRequest;
 import ru.yandex.practicum.service.WarehouseService;
 
+import java.util.Map;
+import java.util.UUID;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -46,5 +49,11 @@ public class WarehouseController implements WarehouseClient {
     public BookedProductsDto checkShoppingCart(ShoppingCartDto shoppingCartDto) throws FeignException {
         log.info("Received request to check shopping cart ID: {}", shoppingCartDto.getShoppingCartId());
         return warehouseService.checkShoppingCart(shoppingCartDto);
+    }
+
+    @Override
+    public void returnProducts(Map<UUID, Integer> products) throws FeignException {
+        log.info("Received request ro return products to warehouse: {}", products);
+        warehouseService.returnProductsToWarehouse(products);
     }
 }

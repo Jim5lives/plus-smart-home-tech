@@ -30,7 +30,7 @@ public class OrderController {
         return orderService.getUsersOrders(username);
     }
 
-    @PutMapping("/return")
+    @PostMapping("/return")
     public OrderDto returnOrderProducts(@RequestBody ProductReturnRequest request) {
         log.info("Received request to return order products: {}", request);
         return orderService.returnOrderProducts(request);

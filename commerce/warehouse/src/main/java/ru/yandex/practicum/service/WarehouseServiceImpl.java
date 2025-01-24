@@ -20,6 +20,7 @@ import ru.yandex.practicum.request.AddProductToWarehouseRequest;
 import ru.yandex.practicum.request.NewProductInWarehouseRequest;
 
 import java.security.SecureRandom;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
@@ -87,6 +88,16 @@ public class WarehouseServiceImpl implements WarehouseService {
         BookedProductsDto bookedProductsDto = calculateDeliveryParams(streamSupplier);
         log.info("Delivery parameters for shopping cart ID: {} are calculated", shoppingCartId);
         return bookedProductsDto;
+    }
+
+    @Override
+    public void returnProductsToWarehouse(Map<UUID, Integer> products) {
+        List<AddProductToWarehouseRequest> requests = products.entrySet().stream()
+                .map(entry -> new AddProductToWarehouseRequest(entry.getKey(), entry.getValue()))
+                .toList();
+
+        requests.forEach(this::increaseProductQuantity);
+        log.info("Products returned to warehouse");
     }
 
     private WarehouseProduct getWarehouseProduct(UUID id) {

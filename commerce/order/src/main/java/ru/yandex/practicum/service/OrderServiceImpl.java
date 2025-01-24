@@ -7,7 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.yandex.practicum.WarehouseClient;
 import ru.yandex.practicum.exception.NoOrderFoundException;
 import ru.yandex.practicum.exception.NotAuthorizedUserException;
-import ru.yandex.practicum.exception.ProductNotFoundException;
 import ru.yandex.practicum.mapper.OrderMapper;
 import ru.yandex.practicum.model.BookedProductsDto;
 import ru.yandex.practicum.model.Order;
