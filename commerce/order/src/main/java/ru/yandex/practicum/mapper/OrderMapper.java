@@ -7,6 +7,8 @@ import ru.yandex.practicum.model.Order;
 import ru.yandex.practicum.model.OrderDto;
 import ru.yandex.practicum.request.CreateNewOrderRequest;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring")
 public interface OrderMapper {
 
@@ -20,4 +22,6 @@ public interface OrderMapper {
     Order mapToOrder(CreateNewOrderRequest request, BookedProductsDto bookedProducts);
 
     OrderDto mapToOrderDto(Order order);
+
+    List<OrderDto> mapToListOrderDto(List<Order> orders);
 }
