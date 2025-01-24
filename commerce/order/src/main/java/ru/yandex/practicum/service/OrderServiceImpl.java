@@ -5,16 +5,21 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.yandex.practicum.WarehouseClient;
+import ru.yandex.practicum.exception.NoOrderFoundException;
 import ru.yandex.practicum.exception.NotAuthorizedUserException;
+import ru.yandex.practicum.exception.ProductNotFoundException;
 import ru.yandex.practicum.mapper.OrderMapper;
 import ru.yandex.practicum.model.BookedProductsDto;
 import ru.yandex.practicum.model.Order;
 import ru.yandex.practicum.model.OrderDto;
+import ru.yandex.practicum.model.OrderState;
 import ru.yandex.practicum.repository.OrderRepository;
 import ru.yandex.practicum.request.CreateNewOrderRequest;
+import ru.yandex.practicum.request.ProductReturnRequest;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -41,6 +46,23 @@ public class OrderServiceImpl implements OrderService {
         List<Order> orders = orderRepository.findByUsername(username);
         log.info("Orders of user {} are found", username);
         return orderMapper.mapToListOrderDto(orders);
+    }
+
+    @Override
+    public OrderDto returnOrderProducts(ProductReturnRequest request) {
+        Order order = getOrder(request.getOrderId());
+        warehouseClient.returnProducts(request.getProducts());
+        order.setState(OrderState.PRODUCT_RETURNED);
+        orderRepository.save(order);
+        log.info("Products for order {} have been returned", request.getOrderId());
+        return orderMapper.mapToOrderDto(order);
+    }
+
+    private Order getOrder(UUID id) {
+        return orderRepository.findById(id).orElseThrow(() -> {
+            log.info("Order with ID: {} is not found", id);
+            return new NoOrderFoundException("Order is not found");
+        });
     }
 
     private void validateUsername(String username) {

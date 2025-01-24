@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.model.OrderDto;
 import ru.yandex.practicum.request.CreateNewOrderRequest;
+import ru.yandex.practicum.request.ProductReturnRequest;
 import ru.yandex.practicum.service.OrderService;
 
 import java.util.Collection;
@@ -25,7 +26,13 @@ public class OrderController {
 
     @GetMapping
     public Collection<OrderDto> getUsersOrders(@RequestParam String username) {
-        log.info("Received request to get user's {} orders", username);
+        log.info("Received request to get user {} orders", username);
         return orderService.getUsersOrders(username);
+    }
+
+    @PutMapping("/return")
+    public OrderDto returnOrderProducts(@RequestBody ProductReturnRequest request) {
+        log.info("Received request to return order products: {}", request);
+        return orderService.returnOrderProducts(request);
     }
 }
