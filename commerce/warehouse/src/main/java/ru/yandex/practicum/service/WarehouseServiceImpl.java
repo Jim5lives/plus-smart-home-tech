@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.yandex.practicum.ShoppingStoreOperations;
+import ru.yandex.practicum.ShoppingStoreClient;
 import ru.yandex.practicum.exception.NoSpecifiedProductInWarehouseException;
 import ru.yandex.practicum.exception.ProductInShoppingCartLowQuantityInWarehouse;
 import ru.yandex.practicum.exception.SpecifiedProductAlreadyInWarehouseException;
@@ -32,7 +32,7 @@ import java.util.stream.Stream;
 public class WarehouseServiceImpl implements WarehouseService {
     private final WarehouseRepository warehouseRepository;
     private final WarehouseProductMapper warehouseProductMapper;
-    private final ShoppingStoreOperations shoppingStoreOperations;
+    private final ShoppingStoreClient shoppingStoreClient;
     private static final AddressDto[] ADDRESSES =
             new AddressDto[]{
                     new AddressDto("ADDRESS_1",
@@ -140,7 +140,7 @@ public class WarehouseServiceImpl implements WarehouseService {
             quantityState = QuantityState.MANY;
         }
         try {
-            shoppingStoreOperations.updateProductQuantity(product.getProductId(), quantityState);
+            shoppingStoreClient.updateProductQuantity(product.getProductId(), quantityState);
         } catch (FeignException e) {
             log.error("Error updating product quantity in store", e);
         }

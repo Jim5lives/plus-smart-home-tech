@@ -8,7 +8,7 @@ import ru.yandex.practicum.model.BookedProductsDto;
 import ru.yandex.practicum.model.ShoppingCartDto;
 
 @FeignClient(name = "warehouse", path = "/api/v1/warehouse")
-public interface WarehouseOperations {
+public interface WarehouseClient {
 
     @PostMapping("/check")
     BookedProductsDto checkShoppingCart(@RequestBody ShoppingCartDto shoppingCartDto) throws FeignException;

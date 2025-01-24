@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.yandex.practicum.WarehouseOperations;
+import ru.yandex.practicum.WarehouseClient;
 import ru.yandex.practicum.exception.NotAuthorizedUserException;
 import ru.yandex.practicum.mapper.OrderMapper;
 import ru.yandex.practicum.model.BookedProductsDto;
@@ -22,12 +22,12 @@ import java.util.List;
 public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final OrderMapper orderMapper;
-    private final WarehouseOperations warehouseOperations;
+    private final WarehouseClient warehouseClient;
 
     @Override
     @Transactional
     public OrderDto createOrder(CreateNewOrderRequest request) {
-        BookedProductsDto bookedProducts = warehouseOperations.checkShoppingCart(request.getShoppingCart());
+        BookedProductsDto bookedProducts = warehouseClient.checkShoppingCart(request.getShoppingCart());
         Order order = orderMapper.mapToOrder(request, bookedProducts);
         order = orderRepository.save(order);
         log.info("New order is saved: {}", order);
