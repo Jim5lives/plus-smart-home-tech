@@ -48,12 +48,23 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public OrderDto returnOrderProducts(ProductReturnRequest request) {
         Order order = getOrder(request.getOrderId());
         warehouseClient.returnProducts(request.getProducts());
         order.setState(OrderState.PRODUCT_RETURNED);
         orderRepository.save(order);
         log.info("Products for order {} have been returned", request.getOrderId());
+        return orderMapper.mapToOrderDto(order);
+    }
+
+    @Override
+    @Transactional
+    public OrderDto orderDeliverySuccessful(UUID orderId) {
+        Order order = getOrder(orderId);
+        order.setState(OrderState.DELIVERED);
+        orderRepository.save(order);
+        log.info("Order with ID:{} is successfully delivered", orderId);
         return orderMapper.mapToOrderDto(order);
     }
 
