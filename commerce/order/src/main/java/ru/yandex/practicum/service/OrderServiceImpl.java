@@ -68,6 +68,16 @@ public class OrderServiceImpl implements OrderService {
         return orderMapper.mapToOrderDto(order);
     }
 
+    @Override
+    @Transactional
+    public OrderDto orderDeliveryFailed(UUID orderId) {
+        Order order = getOrder(orderId);
+        order.setState(OrderState.DELIVERY_FAILED);
+        orderRepository.save(order);
+        log.info("Delivery for order with ID:{} failed", orderId);
+        return orderMapper.mapToOrderDto(order);
+    }
+
     private Order getOrder(UUID id) {
         return orderRepository.findById(id).orElseThrow(() -> {
             log.info("Order with ID: {} is not found", id);

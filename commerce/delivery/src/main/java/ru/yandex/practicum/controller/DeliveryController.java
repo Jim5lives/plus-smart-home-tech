@@ -27,4 +27,10 @@ public class DeliveryController {
         log.info("Received request to set delivery with ID:{} successful", deliveryId);
         return deliveryService.completeDelivery(deliveryId);
     }
+
+    @PostMapping("/failed")
+    public DeliveryDto deliveryFailed(@RequestBody UUID deliveryId) {
+        log.info("Received request to set delivery with ID:{} failed", deliveryId);
+        return deliveryService.deliveryFailed(deliveryId);
+    }
 }

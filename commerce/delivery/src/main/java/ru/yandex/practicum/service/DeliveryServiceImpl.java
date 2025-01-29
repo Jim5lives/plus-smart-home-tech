@@ -43,6 +43,17 @@ public class DeliveryServiceImpl implements DeliveryService {
         return deliveryMapper.mapToDeliveryDto(delivery);
     }
 
+    @Override
+    @Transactional
+    public DeliveryDto deliveryFailed(UUID deliveryId) {
+        Delivery delivery = getDelivery(deliveryId);
+        delivery.setDeliveryState(DeliveryState.FAILED);
+        delivery = deliveryRepository.save(delivery);
+        orderClient.deliveryFailed(delivery.getOrderId());
+        log.info("Delivery with ID:{} failed", deliveryId);
+        return deliveryMapper.mapToDeliveryDto(delivery);
+    }
+
     private Delivery getDelivery(UUID id) {
         return deliveryRepository.findById(id).orElseThrow(() -> {
             log.info("Delivery with ID: {} is not found", id);

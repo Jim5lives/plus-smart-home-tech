@@ -9,4 +9,6 @@ public interface DeliveryService {
     DeliveryDto createDelivery(DeliveryDto delivery);
 
     DeliveryDto completeDelivery(UUID deliveryId);
+
+    DeliveryDto deliveryFailed(UUID deliveryId);
 }

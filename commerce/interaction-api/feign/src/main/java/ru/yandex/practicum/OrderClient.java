@@ -14,4 +14,7 @@ public interface OrderClient {
     @PostMapping("/delivery")
     OrderDto deliverySuccessful(@RequestBody UUID orderId) throws FeignException;
 
+    @PostMapping("/delivery/failed")
+    OrderDto deliveryFailed(@RequestBody UUID orderId) throws FeignException;
+
 }
