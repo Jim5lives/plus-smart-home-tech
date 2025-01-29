@@ -13,6 +13,7 @@ import ru.yandex.practicum.model.Order;
 import ru.yandex.practicum.model.OrderDto;
 import ru.yandex.practicum.model.OrderState;
 import ru.yandex.practicum.repository.OrderRepository;
+import ru.yandex.practicum.request.AssemblyProductsForOrderRequest;
 import ru.yandex.practicum.request.CreateNewOrderRequest;
 import ru.yandex.practicum.request.ProductReturnRequest;
 
@@ -34,6 +35,11 @@ public class OrderServiceImpl implements OrderService {
         BookedProductsDto bookedProducts = warehouseClient.checkShoppingCart(request.getShoppingCart());
         Order order = orderMapper.mapToOrder(request, bookedProducts);
         order = orderRepository.save(order);
+
+        AssemblyProductsForOrderRequest assemblyProductsForOrderRequest =
+                new AssemblyProductsForOrderRequest(order.getOrderId(), order.getProducts());
+        warehouseClient.assemblyProductsForOrder(assemblyProductsForOrderRequest);
+
         log.info("New order is saved: {}", order);
         return orderMapper.mapToOrderDto(order);
     }

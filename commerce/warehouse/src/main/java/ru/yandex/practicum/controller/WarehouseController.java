@@ -13,6 +13,7 @@ import ru.yandex.practicum.model.AddressDto;
 import ru.yandex.practicum.model.BookedProductsDto;
 import ru.yandex.practicum.model.ShoppingCartDto;
 import ru.yandex.practicum.request.AddProductToWarehouseRequest;
+import ru.yandex.practicum.request.AssemblyProductsForOrderRequest;
 import ru.yandex.practicum.request.NewProductInWarehouseRequest;
 import ru.yandex.practicum.request.ShippedToDeliveryRequest;
 import ru.yandex.practicum.service.WarehouseService;
@@ -48,6 +49,12 @@ public class WarehouseController implements WarehouseClient {
     @Override
     public void shipToDelivery(ShippedToDeliveryRequest request) throws FeignException {
         //TODO
+    }
+
+    @Override
+    public BookedProductsDto assemblyProductsForOrder(AssemblyProductsForOrderRequest request) throws FeignException {
+        log.info("Received request to assembly products for order: {}", request);
+        return warehouseService.assemblyProducts(request);
     }
 
     @Override

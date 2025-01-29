@@ -11,6 +11,7 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "bookings")
@@ -19,21 +20,24 @@ public class Booking {
 
     @Id
     @UuidGenerator
-    @Column(name = "order_id")
-    UUID orderId;
+    @Column(name = "booking_id")
+    UUID bookingId;
 
     boolean fragile;
 
-    private double deliveryVolume;
+    double deliveryVolume;
 
-    private double deliveryWeight;
+    double deliveryWeight;
 
     @ElementCollection
-    @CollectionTable(name = "booking_products", joinColumns = @JoinColumn(name = "order_id"))
+    @CollectionTable(name = "booking_products", joinColumns = @JoinColumn(name = "booking_id"))
     @MapKeyColumn(name = "product_id")
     @Column(name = "quantity")
-    Map<String, Long> products;
+    Map<UUID, Long> products;
 
     @Column(name = "delivery_id")
-    private String deliveryId;
+    UUID deliveryId;
+
+    @Column(name = "order_id")
+    UUID orderId;
 }
