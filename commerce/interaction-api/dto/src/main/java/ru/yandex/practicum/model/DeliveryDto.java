@@ -17,7 +17,6 @@ public class DeliveryDto {
 
     UUID deliveryId;
 
-    @NotNull
     AddressDto fromAddress;
 
     @NotNull

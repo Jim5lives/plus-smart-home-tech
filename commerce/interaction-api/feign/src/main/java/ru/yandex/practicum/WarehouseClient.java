@@ -4,6 +4,7 @@ import feign.FeignException;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import ru.yandex.practicum.model.AddressDto;
 import ru.yandex.practicum.model.BookedProductsDto;
 import ru.yandex.practicum.model.ShoppingCartDto;
 
@@ -18,4 +19,7 @@ public interface WarehouseClient {
 
     @PostMapping("/return")
     void returnProducts(@RequestBody Map<UUID, Integer> products) throws FeignException;
+
+    @PostMapping("/address")
+    AddressDto getWarehouseAddress() throws FeignException;
 }

@@ -3,7 +3,6 @@ package ru.yandex.practicum.controller;
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -39,7 +38,7 @@ public class WarehouseController implements WarehouseClient {
         warehouseService.increaseProductQuantity(request);
     }
 
-    @GetMapping("/address")
+    @Override
     public AddressDto getWarehouseAddress() {
         log.info("Received request to get closest warehouse address");
         return warehouseService.getWarehouseAddress();
