@@ -14,4 +14,6 @@ public interface DeliveryService {
     DeliveryDto deliveryFailed(UUID deliveryId);
 
     Double calculateDeliveryCost(OrderDto order);
+
+    DeliveryDto setDeliveryPicked(UUID deliveryId);
 }

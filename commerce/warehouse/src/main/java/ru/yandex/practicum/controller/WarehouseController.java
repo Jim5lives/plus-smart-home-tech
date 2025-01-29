@@ -14,6 +14,7 @@ import ru.yandex.practicum.model.BookedProductsDto;
 import ru.yandex.practicum.model.ShoppingCartDto;
 import ru.yandex.practicum.request.AddProductToWarehouseRequest;
 import ru.yandex.practicum.request.NewProductInWarehouseRequest;
+import ru.yandex.practicum.request.ShippedToDeliveryRequest;
 import ru.yandex.practicum.service.WarehouseService;
 
 import java.util.Map;
@@ -42,6 +43,11 @@ public class WarehouseController implements WarehouseClient {
     public AddressDto getWarehouseAddress() {
         log.info("Received request to get closest warehouse address");
         return warehouseService.getWarehouseAddress();
+    }
+
+    @Override
+    public void shipToDelivery(ShippedToDeliveryRequest request) throws FeignException {
+        //TODO
     }
 
     @Override

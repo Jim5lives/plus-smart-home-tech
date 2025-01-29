@@ -47,7 +47,13 @@ public class OrderController implements OrderClient {
 
     @Override
     public OrderDto deliveryFailed(UUID orderId) throws FeignException {
-        log.info("Received request to set order delivery failed");
+        log.info("Received request to set delivery for order with ID:{} failed", orderId);
         return orderService.orderDeliveryFailed(orderId);
+    }
+
+    @Override
+    public OrderDto orderDeliveryAssembled(UUID orderId) throws FeignException {
+        log.info("Received request to set order status with ID:{} picked in delivery", orderId);
+        return orderService.setOrderDeliveryInProgress(orderId);
     }
 }

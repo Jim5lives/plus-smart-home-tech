@@ -18,4 +18,6 @@ public interface OrderService {
     OrderDto orderDeliverySuccessful(UUID orderId);
 
     OrderDto orderDeliveryFailed(UUID orderId);
+
+    OrderDto setOrderDeliveryInProgress(UUID orderId);
 }

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import ru.yandex.practicum.model.AddressDto;
 import ru.yandex.practicum.model.BookedProductsDto;
 import ru.yandex.practicum.model.ShoppingCartDto;
+import ru.yandex.practicum.request.ShippedToDeliveryRequest;
 
 import java.util.Map;
 import java.util.UUID;
@@ -22,4 +23,7 @@ public interface WarehouseClient {
 
     @PostMapping("/address")
     AddressDto getWarehouseAddress() throws FeignException;
+
+    @PostMapping("/shipped")
+    void shipToDelivery(ShippedToDeliveryRequest request) throws FeignException;
 }

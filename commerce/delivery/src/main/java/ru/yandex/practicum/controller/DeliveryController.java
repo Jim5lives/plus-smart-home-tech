@@ -40,4 +40,10 @@ public class DeliveryController {
         log.info("Received request to calculate delivery cost for order: {}", order);
         return deliveryService.calculateDeliveryCost(order);
     }
+
+    @PostMapping("/picked")
+    public DeliveryDto setDeliveryPicked(@RequestBody UUID deliveryId) {
+        log.info("Received set delivery as picked, delivery ID: {}", deliveryId);
+        return deliveryService.setDeliveryPicked(deliveryId);
+    }
 }

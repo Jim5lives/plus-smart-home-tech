@@ -88,6 +88,18 @@ public class DeliveryServiceImpl implements DeliveryService {
         return totalCost;
     }
 
+    @Override
+    @Transactional
+    public DeliveryDto setDeliveryPicked(UUID deliveryId) {
+        Delivery delivery = getDelivery(deliveryId);
+        delivery.setDeliveryState(DeliveryState.IN_PROGRESS);
+        orderClient.orderDeliveryAssembled(delivery.getOrderId());
+        //TODO warehouseClient.shippedToDelivery();
+        delivery = deliveryRepository.save(delivery);
+        log.info("Delivery with ID:{} is in progress", deliveryId);
+        return deliveryMapper.mapToDeliveryDto(delivery);
+    }
+
     private Delivery getDelivery(UUID id) {
         return deliveryRepository.findById(id).orElseThrow(() -> {
             log.info("Delivery with ID: {} is not found", id);
