@@ -17,6 +17,7 @@ import ru.yandex.practicum.repository.WarehouseRepository;
 import ru.yandex.practicum.request.AddProductToWarehouseRequest;
 import ru.yandex.practicum.request.AssemblyProductsForOrderRequest;
 import ru.yandex.practicum.request.NewProductInWarehouseRequest;
+import ru.yandex.practicum.request.ShippedToDeliveryRequest;
 
 import java.security.SecureRandom;
 import java.util.List;
@@ -115,6 +116,14 @@ public class WarehouseServiceImpl implements WarehouseService {
         booking = bookingRepository.save(booking);
         log.info("Products booked for delivery: {}", booking);
         return bookingMapper.mapToBookingDto(booking);
+    }
+
+    @Override
+    public void shipToDelivery(ShippedToDeliveryRequest request) {
+        Booking booking = bookingRepository.findByOrderId(request.getOrderId());
+        booking.setDeliveryId(request.getDeliveryId());
+        bookingRepository.save(booking);
+        log.info("Products shipped for delivery");
     }
 
     private WarehouseProduct getWarehouseProduct(UUID id) {

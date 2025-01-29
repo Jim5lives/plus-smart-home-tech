@@ -47,8 +47,9 @@ public class WarehouseController implements WarehouseClient {
     }
 
     @Override
-    public void shipToDelivery(ShippedToDeliveryRequest request) throws FeignException {
-        //TODO
+    public void shippedToDelivery(ShippedToDeliveryRequest request) throws FeignException {
+        log.info("Received request to ship products to delivery");
+        warehouseService.shipToDelivery(request);
     }
 
     @Override

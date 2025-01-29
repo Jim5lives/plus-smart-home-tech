@@ -25,9 +25,9 @@ public interface WarehouseClient {
     @PostMapping("/address")
     AddressDto getWarehouseAddress() throws FeignException;
 
-    @PostMapping("/shipped")
-    void shipToDelivery(@RequestBody ShippedToDeliveryRequest request) throws FeignException;
-
     @PostMapping("/assembly")
     BookedProductsDto assemblyProductsForOrder(@RequestBody AssemblyProductsForOrderRequest request) throws FeignException;
+
+    @PostMapping("/shipped")
+    void shippedToDelivery(ShippedToDeliveryRequest request);
 }

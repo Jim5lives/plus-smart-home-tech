@@ -10,6 +10,7 @@ import ru.yandex.practicum.exception.NoDeliveryFoundException;
 import ru.yandex.practicum.mapper.DeliveryMapper;
 import ru.yandex.practicum.model.*;
 import ru.yandex.practicum.repository.DeliveryRepository;
+import ru.yandex.practicum.request.ShippedToDeliveryRequest;
 
 import java.util.UUID;
 
@@ -92,9 +93,10 @@ public class DeliveryServiceImpl implements DeliveryService {
     @Transactional
     public DeliveryDto setDeliveryPicked(UUID deliveryId) {
         Delivery delivery = getDelivery(deliveryId);
+        UUID orderId = delivery.getOrderId();
         delivery.setDeliveryState(DeliveryState.IN_PROGRESS);
-        orderClient.orderDeliveryAssembled(delivery.getOrderId());
-        //TODO warehouseClient.shippedToDelivery();
+        orderClient.orderDeliveryAssembled(orderId);
+        warehouseClient.shippedToDelivery(new ShippedToDeliveryRequest(orderId, deliveryId));
         delivery = deliveryRepository.save(delivery);
         log.info("Delivery with ID:{} is in progress", deliveryId);
         return deliveryMapper.mapToDeliveryDto(delivery);
