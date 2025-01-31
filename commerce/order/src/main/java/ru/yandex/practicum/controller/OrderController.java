@@ -72,7 +72,6 @@ public class OrderController implements OrderClient {
     @Override
     public OrderDto paymentFailed(UUID orderId) throws FeignException {
         log.info("Received request to set order status with ID:{} payment failed", orderId);
-        log.info("Received request to set order status with ID:{} payment failed", orderId);
         return orderService.setOrderPaymentFailed(orderId);
     }
 
@@ -80,5 +79,11 @@ public class OrderController implements OrderClient {
     public OrderDto completeOrder(@RequestBody UUID orderId) {
         log.info("Received request to set order status with ID:{} completed", orderId);
         return orderService.completeOrder(orderId);
+    }
+
+    @PostMapping("/calculate/delivery")
+    public OrderDto calculateDeliveryCost(@RequestBody UUID orderId) {
+        log.info("Received request to calculate delivery for order with ID:{}", orderId);
+        return orderService.calculateDeliveryCost(orderId);
     }
 }

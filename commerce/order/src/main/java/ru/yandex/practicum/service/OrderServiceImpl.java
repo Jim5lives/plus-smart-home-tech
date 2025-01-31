@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.yandex.practicum.DeliveryClient;
 import ru.yandex.practicum.WarehouseClient;
 import ru.yandex.practicum.exception.NoOrderFoundException;
 import ru.yandex.practicum.exception.NotAuthorizedUserException;
@@ -13,7 +14,6 @@ import ru.yandex.practicum.model.Order;
 import ru.yandex.practicum.model.OrderDto;
 import ru.yandex.practicum.model.OrderState;
 import ru.yandex.practicum.repository.OrderRepository;
-import ru.yandex.practicum.request.AssemblyProductsForOrderRequest;
 import ru.yandex.practicum.request.CreateNewOrderRequest;
 import ru.yandex.practicum.request.ProductReturnRequest;
 
@@ -28,6 +28,7 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final OrderMapper orderMapper;
     private final WarehouseClient warehouseClient;
+    private final DeliveryClient deliveryClient;
 
     @Override
     @Transactional
@@ -35,9 +36,6 @@ public class OrderServiceImpl implements OrderService {
         BookedProductsDto bookedProducts = warehouseClient.checkShoppingCart(request.getShoppingCart());
         Order order = orderMapper.mapToOrder(request, bookedProducts);
         order = orderRepository.save(order);
-
-
-
         log.info("New order is saved: {}", order);
         return orderMapper.mapToOrderDto(order);
     }
@@ -116,6 +114,16 @@ public class OrderServiceImpl implements OrderService {
         order.setState(OrderState.PAYMENT_FAILED);
         order = orderRepository.save(order);
         log.info("Payment for order with ID:{} was failed", orderId);
+        return orderMapper.mapToOrderDto(order);
+    }
+
+    @Override
+    public OrderDto calculateDeliveryCost(UUID orderId) {
+        Order order = getOrder(orderId);
+        double deliveryPrice = deliveryClient.calculateDeliveryCost(orderMapper.mapToOrderDto(order));
+        order.setDeliveryPrice(deliveryPrice);
+        order = orderRepository.save(order);
+        log.info("Delivery cost for order with ID:{} is calculated:{}", orderId, deliveryPrice);
         return orderMapper.mapToOrderDto(order);
     }
 

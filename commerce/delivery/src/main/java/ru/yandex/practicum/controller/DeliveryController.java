@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import ru.yandex.practicum.DeliveryClient;
 import ru.yandex.practicum.model.DeliveryDto;
 import ru.yandex.practicum.model.OrderDto;
 import ru.yandex.practicum.service.DeliveryService;
@@ -14,7 +15,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/delivery")
 @RequiredArgsConstructor
-public class DeliveryController {
+public class DeliveryController implements DeliveryClient {
     private final DeliveryService deliveryService;
 
     @PutMapping
@@ -35,8 +36,8 @@ public class DeliveryController {
         return deliveryService.deliveryFailed(deliveryId);
     }
 
-    @PostMapping("/cost")
-    public Double calculateDeliveryCost(@RequestBody OrderDto order) {
+    @Override
+    public Double calculateDeliveryCost(OrderDto order) {
         log.info("Received request to calculate delivery cost for order: {}", order);
         return deliveryService.calculateDeliveryCost(order);
     }
