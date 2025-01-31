@@ -43,4 +43,10 @@ public class PaymentController {
         log.info("Received request to set payment with ID:{} successful", paymentId);
         paymentService.setPaymentSuccessful(paymentId);
     }
+
+    @PostMapping("/failed")
+    public void setPaymentFailed(@RequestBody UUID paymentId) {
+        log.info("Received request to set payment with ID:{} failed", paymentId);
+        paymentService.setPaymentFailed(paymentId);
+    }
 }

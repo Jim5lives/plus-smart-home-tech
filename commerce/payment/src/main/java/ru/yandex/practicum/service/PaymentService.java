@@ -14,4 +14,6 @@ public interface PaymentService {
     double calculateTotalCost(OrderDto order);
 
     void setPaymentSuccessful(UUID paymentId);
+
+    void setPaymentFailed(UUID paymentId);
 }

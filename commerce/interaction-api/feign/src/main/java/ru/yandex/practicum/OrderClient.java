@@ -22,4 +22,7 @@ public interface OrderClient {
 
     @PostMapping("/payment")
     OrderDto paymentSuccessful(@RequestBody UUID orderId) throws FeignException;
+
+    @PostMapping("/payment/failed")
+    OrderDto paymentFailed(@RequestBody UUID orderId) throws FeignException;
 }

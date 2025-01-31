@@ -9,7 +9,11 @@ import ru.yandex.practicum.ShoppingStoreClient;
 import ru.yandex.practicum.exception.NoPaymentFoundException;
 import ru.yandex.practicum.exception.NotEnoughInfoInOrderToCalculateException;
 import ru.yandex.practicum.mapper.PaymentMapper;
-import ru.yandex.practicum.model.*;
+import ru.yandex.practicum.model.OrderDto;
+import ru.yandex.practicum.model.Payment;
+import ru.yandex.practicum.model.PaymentDto;
+import ru.yandex.practicum.model.PaymentState;
+import ru.yandex.practicum.model.ProductDto;
 import ru.yandex.practicum.repository.PaymentRepository;
 
 import java.util.ArrayList;
@@ -72,6 +76,15 @@ public class PaymentServiceImpl implements PaymentService {
         orderClient.paymentSuccessful(payment.getOrderId());
         paymentRepository.save(payment);
         log.info("Payment with ID:{} was successful", paymentId);
+    }
+
+    @Override
+    public void setPaymentFailed(UUID paymentId) {
+        Payment payment = getPayment(paymentId);
+        payment.setPaymentState(PaymentState.FAILED);
+        orderClient.paymentFailed(payment.getOrderId());
+        paymentRepository.save(payment);
+        log.info("Payment with ID:{} was failed", paymentId);
     }
 
     private Payment getPayment(UUID paymentId) {

@@ -22,4 +22,6 @@ public interface OrderService {
     OrderDto setOrderDeliveryInProgress(UUID orderId);
 
     OrderDto setOrderPaid(UUID orderId);
+
+    OrderDto setOrderPaymentFailed(UUID orderId);
 }
