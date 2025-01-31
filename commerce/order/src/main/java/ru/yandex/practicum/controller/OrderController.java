@@ -52,9 +52,15 @@ public class OrderController implements OrderClient {
     }
 
     @Override
-    public OrderDto orderDeliveryAssembled(UUID orderId) throws FeignException {
+    public OrderDto assembly(UUID orderId) throws FeignException {
         log.info("Received request to set order status with ID:{} picked in delivery", orderId);
         return orderService.setOrderDeliveryInProgress(orderId);
+    }
+
+    @Override
+    public OrderDto assemblyFailed(UUID orderId) throws FeignException {
+        log.info("Received request to set order status with ID:{} assembly failed", orderId);
+        return orderService.setOrderDeliveryAssemblyFailed(orderId);
     }
 
     @Override

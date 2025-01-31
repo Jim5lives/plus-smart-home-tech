@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.yandex.practicum.OrderClient;
 import ru.yandex.practicum.ShoppingStoreClient;
+import ru.yandex.practicum.WarehouseClient;
 import ru.yandex.practicum.exception.NoPaymentFoundException;
 import ru.yandex.practicum.exception.NotEnoughInfoInOrderToCalculateException;
 import ru.yandex.practicum.mapper.PaymentMapper;
@@ -15,6 +16,7 @@ import ru.yandex.practicum.model.PaymentDto;
 import ru.yandex.practicum.model.PaymentState;
 import ru.yandex.practicum.model.ProductDto;
 import ru.yandex.practicum.repository.PaymentRepository;
+import ru.yandex.practicum.request.AssemblyProductsForOrderRequest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,10 +31,15 @@ public class PaymentServiceImpl implements PaymentService {
     private final PaymentMapper paymentMapper;
     private final ShoppingStoreClient shoppingStoreClient;
     private final OrderClient orderClient;
+    private final WarehouseClient warehouseClient;
 
     @Override
     @Transactional
     public PaymentDto createPayment(OrderDto order) {
+        AssemblyProductsForOrderRequest assemblyProductsForOrderRequest =
+                new AssemblyProductsForOrderRequest(order.getOrderId(), order.getProducts());
+        warehouseClient.assemblyProductsForOrder(assemblyProductsForOrderRequest);
+
         validatePaymentInfo(order.getProductPrice(), order.getDeliveryPrice(), order.getTotalPrice());
         Payment payment = paymentMapper.mapToPayment(order);
         payment = paymentRepository.save(payment);

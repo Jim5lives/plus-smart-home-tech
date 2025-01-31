@@ -36,9 +36,7 @@ public class OrderServiceImpl implements OrderService {
         Order order = orderMapper.mapToOrder(request, bookedProducts);
         order = orderRepository.save(order);
 
-        AssemblyProductsForOrderRequest assemblyProductsForOrderRequest =
-                new AssemblyProductsForOrderRequest(order.getOrderId(), order.getProducts());
-        warehouseClient.assemblyProductsForOrder(assemblyProductsForOrderRequest);
+
 
         log.info("New order is saved: {}", order);
         return orderMapper.mapToOrderDto(order);
@@ -91,6 +89,15 @@ public class OrderServiceImpl implements OrderService {
         order.setState(OrderState.ON_DELIVERY);
         order = orderRepository.save(order);
         log.info("Delivery for order with ID:{} was picked up", orderId);
+        return orderMapper.mapToOrderDto(order);
+    }
+
+    @Override
+    public OrderDto setOrderDeliveryAssemblyFailed(UUID orderId) {
+        Order order = getOrder(orderId);
+        order.setState(OrderState.ASSEMBLY_FAILED);
+        order = orderRepository.save(order);
+        log.info("Assembly for order with ID:{} was faied", orderId);
         return orderMapper.mapToOrderDto(order);
     }
 
