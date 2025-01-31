@@ -16,7 +16,6 @@ import ru.yandex.practicum.model.PaymentDto;
 import ru.yandex.practicum.model.PaymentState;
 import ru.yandex.practicum.model.ProductDto;
 import ru.yandex.practicum.repository.PaymentRepository;
-import ru.yandex.practicum.request.AssemblyProductsForOrderRequest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,15 +30,10 @@ public class PaymentServiceImpl implements PaymentService {
     private final PaymentMapper paymentMapper;
     private final ShoppingStoreClient shoppingStoreClient;
     private final OrderClient orderClient;
-    private final WarehouseClient warehouseClient;
 
     @Override
     @Transactional
     public PaymentDto createPayment(OrderDto order) {
-        AssemblyProductsForOrderRequest assemblyProductsForOrderRequest =
-                new AssemblyProductsForOrderRequest(order.getOrderId(), order.getProducts());
-        warehouseClient.assemblyProductsForOrder(assemblyProductsForOrderRequest);
-
         validatePaymentInfo(order.getProductPrice(), order.getDeliveryPrice(), order.getTotalPrice());
         Payment payment = paymentMapper.mapToPayment(order);
         payment = paymentRepository.save(payment);
@@ -64,7 +58,7 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public double calculateTotalCost(OrderDto order) {
-        validatePaymentInfo(order.getProductPrice(), order.getProductPrice());
+        validatePaymentInfo(order.getProductPrice(), order.getDeliveryPrice());
 
         final double VAT_RATE = 0.20;
         double productsPrice = order.getProductPrice();

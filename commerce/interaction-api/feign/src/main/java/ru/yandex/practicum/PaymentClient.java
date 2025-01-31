@@ -1,15 +1,15 @@
 package ru.yandex.practicum;
 
 import feign.FeignException;
+import jakarta.validation.Valid;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import ru.yandex.practicum.model.OrderDto;
 
+@FeignClient(name = "payment", path = "/api/v1/payment")
+public interface PaymentClient {
 
-@FeignClient(name = "delivery", path = "/api/v1/delivery")
-public interface DeliveryClient {
-
-    @PostMapping("/cost")
-    double calculateDeliveryCost(@RequestBody OrderDto order) throws FeignException;
+    @PostMapping("/totalCost")
+    double calculateTotalCost(@RequestBody @Valid OrderDto order) throws FeignException;
 }

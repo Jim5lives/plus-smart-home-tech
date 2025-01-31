@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.yandex.practicum.DeliveryClient;
+import ru.yandex.practicum.PaymentClient;
 import ru.yandex.practicum.WarehouseClient;
 import ru.yandex.practicum.exception.NoOrderFoundException;
 import ru.yandex.practicum.exception.NotAuthorizedUserException;
@@ -14,6 +15,7 @@ import ru.yandex.practicum.model.Order;
 import ru.yandex.practicum.model.OrderDto;
 import ru.yandex.practicum.model.OrderState;
 import ru.yandex.practicum.repository.OrderRepository;
+import ru.yandex.practicum.request.AssemblyProductsForOrderRequest;
 import ru.yandex.practicum.request.CreateNewOrderRequest;
 import ru.yandex.practicum.request.ProductReturnRequest;
 
@@ -29,6 +31,7 @@ public class OrderServiceImpl implements OrderService {
     private final OrderMapper orderMapper;
     private final WarehouseClient warehouseClient;
     private final DeliveryClient deliveryClient;
+    private final PaymentClient paymentClient;
 
     @Override
     @Transactional
@@ -84,6 +87,9 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public OrderDto setOrderDeliveryInProgress(UUID orderId) {
         Order order = getOrder(orderId);
+        AssemblyProductsForOrderRequest assemblyProductsForOrderRequest =
+                new AssemblyProductsForOrderRequest(order.getOrderId(), order.getProducts());
+        warehouseClient.assemblyProductsForOrder(assemblyProductsForOrderRequest);
         order.setState(OrderState.ON_DELIVERY);
         order = orderRepository.save(order);
         log.info("Delivery for order with ID:{} was picked up", orderId);
@@ -95,7 +101,7 @@ public class OrderServiceImpl implements OrderService {
         Order order = getOrder(orderId);
         order.setState(OrderState.ASSEMBLY_FAILED);
         order = orderRepository.save(order);
-        log.info("Assembly for order with ID:{} was faied", orderId);
+        log.info("Assembly for order with ID:{} was failed", orderId);
         return orderMapper.mapToOrderDto(order);
     }
 
@@ -124,6 +130,16 @@ public class OrderServiceImpl implements OrderService {
         order.setDeliveryPrice(deliveryPrice);
         order = orderRepository.save(order);
         log.info("Delivery cost for order with ID:{} is calculated:{}", orderId, deliveryPrice);
+        return orderMapper.mapToOrderDto(order);
+    }
+
+    @Override
+    public OrderDto calculateTotalCost(UUID orderId) {
+        Order order = getOrder(orderId);
+        double totalPrice = paymentClient.calculateTotalCost(orderMapper.mapToOrderDto(order));
+        order.setTotalPrice(totalPrice);
+        order = orderRepository.save(order);
+        log.info("Total price for order with ID:{} is calculated:{}", orderId, totalPrice);
         return orderMapper.mapToOrderDto(order);
     }
 

@@ -86,4 +86,10 @@ public class OrderController implements OrderClient {
         log.info("Received request to calculate delivery for order with ID:{}", orderId);
         return orderService.calculateDeliveryCost(orderId);
     }
+
+    @PostMapping("/calculate/total")
+    public OrderDto calculateTotalCost(@RequestBody UUID orderId) {
+        log.info("Received request to calculate total cost for order with ID:{}", orderId);
+        return orderService.calculateTotalCost(orderId);
+    }
 }

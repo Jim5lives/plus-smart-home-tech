@@ -37,7 +37,7 @@ public class DeliveryController implements DeliveryClient {
     }
 
     @Override
-    public Double calculateDeliveryCost(OrderDto order) {
+    public double calculateDeliveryCost(OrderDto order) {
         log.info("Received request to calculate delivery cost for order: {}", order);
         return deliveryService.calculateDeliveryCost(order);
     }
