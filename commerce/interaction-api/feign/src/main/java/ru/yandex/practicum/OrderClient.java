@@ -23,7 +23,7 @@ public interface OrderClient {
     @PostMapping("/delivery/assembly/failed")
     OrderDto assemblyFailed(@RequestBody UUID orderId) throws FeignException;
 
-    @PostMapping("/payment")
+    @PostMapping("/payment/successful")
     OrderDto paymentSuccessful(@RequestBody UUID orderId) throws FeignException;
 
     @PostMapping("/payment/failed")

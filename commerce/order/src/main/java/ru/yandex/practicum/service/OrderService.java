@@ -23,9 +23,13 @@ public interface OrderService {
 
     OrderDto setOrderDeliveryAssemblyFailed(UUID orderId);
 
+    OrderDto createOrderPayment(UUID orderId);
+
     OrderDto setOrderPaid(UUID orderId);
 
     OrderDto setOrderPaymentFailed(UUID orderId);
+
+    OrderDto calculateProductCost(UUID orderId);
 
     OrderDto calculateDeliveryCost(UUID orderId);
 

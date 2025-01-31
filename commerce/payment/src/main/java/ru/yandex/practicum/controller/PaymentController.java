@@ -1,6 +1,5 @@
 package ru.yandex.practicum.controller;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,14 +20,14 @@ import java.util.UUID;
 public class PaymentController implements PaymentClient {
     private final PaymentService paymentService;
 
-    @PostMapping
-    public PaymentDto createPayment(@RequestBody @Valid OrderDto order) {
+    @Override
+    public PaymentDto createPayment(OrderDto order) {
         log.info("Received request to create payment for order with ID:{}", order.getOrderId());
         return paymentService.createPayment(order);
     }
 
-    @PostMapping("/productCost")
-    public double calculateProductCost(@RequestBody @Valid OrderDto order) {
+    @Override
+    public double calculateProductCost(OrderDto order) {
         log.info("Received request to calculate product cost for order with ID:{}", order.getOrderId());
         return paymentService.calculateProductCost(order);
     }

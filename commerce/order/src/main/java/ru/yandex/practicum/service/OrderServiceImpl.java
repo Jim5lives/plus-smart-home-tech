@@ -10,10 +10,7 @@ import ru.yandex.practicum.WarehouseClient;
 import ru.yandex.practicum.exception.NoOrderFoundException;
 import ru.yandex.practicum.exception.NotAuthorizedUserException;
 import ru.yandex.practicum.mapper.OrderMapper;
-import ru.yandex.practicum.model.BookedProductsDto;
-import ru.yandex.practicum.model.Order;
-import ru.yandex.practicum.model.OrderDto;
-import ru.yandex.practicum.model.OrderState;
+import ru.yandex.practicum.model.*;
 import ru.yandex.practicum.repository.OrderRepository;
 import ru.yandex.practicum.request.AssemblyProductsForOrderRequest;
 import ru.yandex.practicum.request.CreateNewOrderRequest;
@@ -106,6 +103,18 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
+    public OrderDto createOrderPayment(UUID orderId) {
+        Order order = getOrder(orderId);
+        PaymentDto payment = paymentClient.createPayment(orderMapper.mapToOrderDto(order));
+        order.setPaymentId(payment.getPaymentId());
+        order.setState(OrderState.ON_PAYMENT);
+        order = orderRepository.save(order);
+        log.info("Payment for order with ID:{} was created", orderId);
+        return orderMapper.mapToOrderDto(order);
+    }
+
+    @Override
     public OrderDto setOrderPaid(UUID orderId) {
         Order order = getOrder(orderId);
         order.setState(OrderState.PAID);
@@ -120,6 +129,16 @@ public class OrderServiceImpl implements OrderService {
         order.setState(OrderState.PAYMENT_FAILED);
         order = orderRepository.save(order);
         log.info("Payment for order with ID:{} was failed", orderId);
+        return orderMapper.mapToOrderDto(order);
+    }
+
+    @Override
+    public OrderDto calculateProductCost(UUID orderId) {
+        Order order = getOrder(orderId);
+        double productPrice = paymentClient.calculateProductCost(orderMapper.mapToOrderDto(order));
+        order.setProductPrice(productPrice);
+        order = orderRepository.save(order);
+        log.info("Product cost for order with ID:{} is calculated:{}", orderId, productPrice);
         return orderMapper.mapToOrderDto(order);
     }
 
