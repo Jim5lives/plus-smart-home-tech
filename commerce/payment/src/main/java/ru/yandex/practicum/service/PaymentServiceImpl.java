@@ -51,5 +51,16 @@ public class PaymentServiceImpl implements PaymentService {
         return totalProductCost;
     }
 
+    @Override
+    public double calculateTotalCost(OrderDto order) {
+        final double VAT_RATE = 0.20;
+        double productsPrice = order.getProductPrice();
+        double deliveryPrice = order.getDeliveryPrice();
+
+        double totalCost = deliveryPrice + productsPrice + (productsPrice * VAT_RATE);
+        log.info("Total cost is calculated: {}", totalCost);
+        return totalCost;
+    }
+
 
 }

@@ -29,4 +29,10 @@ public class PaymentController {
         log.info("Received request to calculate product cost for order with ID:{}", order.getOrderId());
         return paymentService.calculateProductCost(order);
     }
+
+    @PostMapping("/totalCost")
+    public double calculateTotalCost(@RequestBody @Valid OrderDto order) {
+        log.info("Received request to calculate total cost for order with ID:{}", order.getOrderId());
+        return paymentService.calculateTotalCost(order);
+    }
 }

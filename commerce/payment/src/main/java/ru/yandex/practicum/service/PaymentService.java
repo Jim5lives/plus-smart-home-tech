@@ -8,4 +8,6 @@ public interface PaymentService {
     PaymentDto createPayment(OrderDto order);
 
     double calculateProductCost(OrderDto order);
+
+    double calculateTotalCost(OrderDto order);
 }
