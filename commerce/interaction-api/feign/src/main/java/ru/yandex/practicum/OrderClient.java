@@ -19,4 +19,7 @@ public interface OrderClient {
 
     @PostMapping("/delivery/assembly")
     OrderDto orderDeliveryAssembled(@RequestBody UUID orderId) throws FeignException;
+
+    @PostMapping("/payment")
+    OrderDto paymentSuccessful(@RequestBody UUID orderId) throws FeignException;
 }
