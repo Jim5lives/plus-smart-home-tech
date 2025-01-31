@@ -119,6 +119,15 @@ public class OrderServiceImpl implements OrderService {
         return orderMapper.mapToOrderDto(order);
     }
 
+    @Override
+    public OrderDto completeOrder(UUID orderId) {
+        Order order = getOrder(orderId);
+        order.setState(OrderState.COMPLETED);
+        order = orderRepository.save(order);
+        log.info("Order with ID:{} is completed", orderId);
+        return orderMapper.mapToOrderDto(order);
+    }
+
     private Order getOrder(UUID id) {
         return orderRepository.findById(id).orElseThrow(() -> {
             log.info("Order with ID: {} is not found", id);
