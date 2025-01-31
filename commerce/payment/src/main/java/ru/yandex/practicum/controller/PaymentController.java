@@ -23,4 +23,10 @@ public class PaymentController {
         log.info("Received request to create payment for order with ID:{}", order.getOrderId());
         return paymentService.createPayment(order);
     }
+
+    @PostMapping("/productCost")
+    public double calculateProductCost(@RequestBody @Valid OrderDto order) {
+        log.info("Received request to calculate product cost for order with ID:{}", order.getOrderId());
+        return paymentService.calculateProductCost(order);
+    }
 }

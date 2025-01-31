@@ -6,4 +6,6 @@ import ru.yandex.practicum.model.PaymentDto;
 public interface PaymentService {
 
     PaymentDto createPayment(OrderDto order);
+
+    double calculateProductCost(OrderDto order);
 }
