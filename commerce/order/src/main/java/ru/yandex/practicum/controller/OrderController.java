@@ -39,8 +39,6 @@ public class OrderController implements OrderClient {
         return orderService.returnOrderProducts(request);
     }
 
-
-
     @Override
     public OrderDto deliverySuccessful(UUID orderId) throws FeignException {
         log.info("Received request to set order delivery successful");

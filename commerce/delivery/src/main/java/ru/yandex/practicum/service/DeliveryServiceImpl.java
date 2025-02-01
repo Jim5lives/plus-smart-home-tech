@@ -26,10 +26,7 @@ public class DeliveryServiceImpl implements DeliveryService {
     @Override
     @Transactional
     public DeliveryDto createDelivery(DeliveryDto deliveryDto) {
-        AddressDto warehouseAddress = warehouseClient.getWarehouseAddress();
-        deliveryDto.setFromAddress(warehouseAddress);
         Delivery delivery = deliveryMapper.mapToDelivery(deliveryDto);
-        delivery.setDeliveryState(DeliveryState.CREATED);
         delivery = deliveryRepository.save(delivery);
         log.info("New delivery is created: {}", delivery);
         return deliveryMapper.mapToDeliveryDto(delivery);

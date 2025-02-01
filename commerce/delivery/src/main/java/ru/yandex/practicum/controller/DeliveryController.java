@@ -18,8 +18,8 @@ import java.util.UUID;
 public class DeliveryController implements DeliveryClient {
     private final DeliveryService deliveryService;
 
-    @PutMapping
-    public DeliveryDto createDelivery(@RequestBody @Valid DeliveryDto delivery) {
+    @Override
+    public DeliveryDto planDelivery(DeliveryDto delivery) {
         log.info("Received request to create new delivery: {}", delivery);
         return deliveryService.createDelivery(delivery);
     }

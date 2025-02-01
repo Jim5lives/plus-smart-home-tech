@@ -36,6 +36,18 @@ public class OrderServiceImpl implements OrderService {
         BookedProductsDto bookedProducts = warehouseClient.checkShoppingCart(request.getShoppingCart());
         Order order = orderMapper.mapToOrder(request, bookedProducts);
         order = orderRepository.save(order);
+
+        AddressDto warehouseAddress = warehouseClient.getWarehouseAddress();
+        DeliveryDto newDelivery = DeliveryDto.builder()
+                .fromAddress(warehouseAddress)
+                .toAddress(request.getDeliveryAddress())
+                .orderId(order.getOrderId())
+                .deliveryState(DeliveryState.CREATED)
+                .build();
+        newDelivery = deliveryClient.planDelivery(newDelivery);
+        order.setDeliveryId(newDelivery.getDeliveryId());
+
+        order = orderRepository.save(order);
         log.info("New order is saved: {}", order);
         return orderMapper.mapToOrderDto(order);
     }
@@ -143,6 +155,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public OrderDto calculateDeliveryCost(UUID orderId) {
         Order order = getOrder(orderId);
         double deliveryPrice = deliveryClient.calculateDeliveryCost(orderMapper.mapToOrderDto(order));
@@ -153,6 +166,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public OrderDto calculateTotalCost(UUID orderId) {
         Order order = getOrder(orderId);
         double totalPrice = paymentClient.calculateTotalCost(orderMapper.mapToOrderDto(order));
