@@ -34,7 +34,7 @@ public class OrderController implements OrderClient {
     }
 
     @PostMapping("/return")
-    public OrderDto returnOrderProducts(@RequestBody ProductReturnRequest request) {
+    public OrderDto returnOrderProducts(@RequestBody @Valid ProductReturnRequest request) {
         log.info("Received request to return order products: {}", request);
         return orderService.returnOrderProducts(request);
     }
@@ -42,17 +42,17 @@ public class OrderController implements OrderClient {
     @Override
     public OrderDto deliverySuccessful(UUID orderId) throws FeignException {
         log.info("Received request to set order delivery successful");
-        return orderService.orderDeliverySuccessful(orderId);
+        return orderService.setOrderDeliverySuccessful(orderId);
     }
 
     @Override
     public OrderDto deliveryFailed(UUID orderId) throws FeignException {
         log.info("Received request to set delivery for order with ID:{} failed", orderId);
-        return orderService.orderDeliveryFailed(orderId);
+        return orderService.setOrderDeliveryFailed(orderId);
     }
 
     @Override
-    public OrderDto assembly(UUID orderId) throws FeignException {
+    public OrderDto assemblySuccessful(UUID orderId) throws FeignException {
         log.info("Received request to set order status with ID:{} picked in delivery", orderId);
         return orderService.setOrderDeliveryInProgress(orderId);
     }
@@ -81,12 +81,6 @@ public class OrderController implements OrderClient {
         return orderService.setOrderPaymentFailed(orderId);
     }
 
-    @PostMapping("/completed")
-    public OrderDto completeOrder(@RequestBody UUID orderId) {
-        log.info("Received request to set order status with ID:{} completed", orderId);
-        return orderService.completeOrder(orderId);
-    }
-
     @PostMapping("/calculate/productCost")
     public OrderDto calculateProductCost(@RequestBody UUID orderId) {
         log.info("Received request to calculate product cost for order with ID:{}", orderId);
@@ -103,5 +97,11 @@ public class OrderController implements OrderClient {
     public OrderDto calculateTotalCost(@RequestBody UUID orderId) {
         log.info("Received request to calculate total cost for order with ID:{}", orderId);
         return orderService.calculateTotalCost(orderId);
+    }
+
+    @PostMapping("/completed")
+    public OrderDto completeOrder(@RequestBody UUID orderId) {
+        log.info("Received request to set order status with ID:{} completed", orderId);
+        return orderService.completeOrder(orderId);
     }
 }

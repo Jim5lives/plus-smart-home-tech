@@ -1,6 +1,5 @@
 package ru.yandex.practicum.service;
 
-import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -95,11 +94,11 @@ public class WarehouseServiceImpl implements WarehouseService {
     }
 
     @Override
+    @Transactional
     public void returnProductsToWarehouse(Map<UUID, Integer> products) {
         List<AddProductToWarehouseRequest> requests = products.entrySet().stream()
                 .map(entry -> new AddProductToWarehouseRequest(entry.getKey(), entry.getValue()))
                 .toList();
-
         requests.forEach(this::increaseProductQuantity);
         log.info("Products returned to warehouse");
     }
@@ -187,11 +186,8 @@ public class WarehouseServiceImpl implements WarehouseService {
         } else {
             quantityState = QuantityState.MANY;
         }
-        try {
-            shoppingStoreClient.updateProductQuantity(product.getProductId(), quantityState);
-        } catch (FeignException e) {
-            log.error("Error updating product quantity in store", e);
-        }
+
+        shoppingStoreClient.updateProductQuantity(product.getProductId(), quantityState);
     }
 
     private void decreaseProductQuantityAfterBooking(Map<UUID, Integer> products) {

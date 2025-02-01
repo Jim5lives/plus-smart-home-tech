@@ -92,8 +92,8 @@ public class DeliveryServiceImpl implements DeliveryService {
         Delivery delivery = getDelivery(deliveryId);
         UUID orderId = delivery.getOrderId();
         delivery.setDeliveryState(DeliveryState.IN_PROGRESS);
-        orderClient.assembly(orderId);
         warehouseClient.shippedToDelivery(new ShippedToDeliveryRequest(orderId, deliveryId));
+        orderClient.assemblySuccessful(orderId);
         delivery = deliveryRepository.save(delivery);
         log.info("Delivery with ID:{} is in progress", deliveryId);
         return deliveryMapper.mapToDeliveryDto(delivery);
