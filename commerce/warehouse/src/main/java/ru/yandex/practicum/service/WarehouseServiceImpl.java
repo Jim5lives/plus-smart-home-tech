@@ -11,7 +11,12 @@ import ru.yandex.practicum.exception.ProductInShoppingCartLowQuantityInWarehouse
 import ru.yandex.practicum.exception.SpecifiedProductAlreadyInWarehouseException;
 import ru.yandex.practicum.mapper.BookingMapper;
 import ru.yandex.practicum.mapper.WarehouseProductMapper;
-import ru.yandex.practicum.model.*;
+import ru.yandex.practicum.model.AddressDto;
+import ru.yandex.practicum.model.BookedProductsDto;
+import ru.yandex.practicum.model.Booking;
+import ru.yandex.practicum.model.QuantityState;
+import ru.yandex.practicum.model.ShoppingCartDto;
+import ru.yandex.practicum.model.WarehouseProduct;
 import ru.yandex.practicum.repository.BookingRepository;
 import ru.yandex.practicum.repository.WarehouseRepository;
 import ru.yandex.practicum.request.AddProductToWarehouseRequest;
@@ -116,6 +121,8 @@ public class WarehouseServiceImpl implements WarehouseService {
             orderClient.assemblyFailed(request.getOrderId());
             throw exception;
         }
+
+        orderClient.assemblySuccessful(request.getOrderId());
 
         BookedProductsDto bookedProductsParams = calculateDeliveryParams(streamSupplier);
         decreaseProductQuantityAfterBooking(products);

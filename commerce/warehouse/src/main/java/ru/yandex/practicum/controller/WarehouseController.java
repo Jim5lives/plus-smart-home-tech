@@ -42,7 +42,7 @@ public class WarehouseController implements WarehouseClient {
     }
 
     @Override
-    public AddressDto getWarehouseAddress() {
+    public AddressDto getWarehouseAddress() throws FeignException {
         log.info("Received request to get closest warehouse address");
         return warehouseService.getWarehouseAddress();
     }

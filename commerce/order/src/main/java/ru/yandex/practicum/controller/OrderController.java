@@ -4,7 +4,13 @@ import feign.FeignException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import ru.yandex.practicum.OrderClient;
 import ru.yandex.practicum.model.OrderDto;
 import ru.yandex.practicum.request.CreateNewOrderRequest;
@@ -64,7 +70,7 @@ public class OrderController implements OrderClient {
     }
 
     @PostMapping("/payment")
-    public OrderDto createOrderPayment(UUID orderId) {
+    public OrderDto createOrderPayment(@RequestBody UUID orderId) {
         log.info("Received request to create payment order with ID:{} paid", orderId);
         return orderService.createOrderPayment(orderId);
     }
